@@ -12,8 +12,31 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    this.postOrder();
     this.clearInputs();
   }
+
+  postOrder = async () => {
+      const settings = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        ingredients: this.state.ingredients
+      })
+   };
+   try {
+   const fetchResponse = await fetch(`http://localhost:3001/api/v1/orders/`, settings)
+   const data = await fetchResponse.json()
+      return data
+   } catch (error) {
+     return error
+   }
+}
+
 
   handleIngredientChange = e => {
     e.preventDefault();
