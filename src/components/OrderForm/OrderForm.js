@@ -12,8 +12,17 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if (this.checkOrder()){
     this.postOrder();
     this.clearInputs();
+    }
+  }
+
+  checkOrder = () => {
+    if (this.state.name !=='' && this.state.ingredients.length !== 0){
+      return true
+    } 
+    return false;
   }
 
   postOrder = async () => {
@@ -57,7 +66,7 @@ class OrderForm extends Component {
     const possibleIngredients = ['beans', 'steak', 'carnitas', 'sofritas', 'lettuce', 'queso fresco', 'pico de gallo', 'hot sauce', 'guacamole', 'jalapenos', 'cilantro', 'sour cream'];
     const ingredientButtons = possibleIngredients.map(ingredient => {
       return (
-        <button key={ingredient} name={ingredient} onClick={e => this.handleIngredientChange(e)}>
+        <button className='ingBut' key={ingredient} name={ingredient} onClick={e => this.handleIngredientChange(e)}>
           {ingredient}
         </button>
       )
@@ -66,18 +75,20 @@ class OrderForm extends Component {
     return (
       <form>
         <input
+          className='nameInput'
           type='text'
           placeholder='Name'
           name='name'
           value={this.state.name}
           onChange={e => this.handleNameChange(e)}
+          required="required"
         />
 
         { ingredientButtons }
 
         <p>Order: { this.state.ingredients.join(', ') || 'Nothing selected' }</p>
 
-        <button onClick={e => this.handleSubmit(e)}>
+        <button className='submit' onClick={e => this.handleSubmit(e)}>
           Submit Order
         </button>
       </form>
